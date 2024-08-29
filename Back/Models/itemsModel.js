@@ -1,7 +1,7 @@
 const db = require('./db.js');
 
 function getAllItems(result) {
-    const sql = 'SELECT * from data';
+    const sql = 'SELECT * from data where available=1';
     db.query(sql, (error, res) => {
         if (error) {
             result(error, null);
@@ -12,8 +12,19 @@ function getAllItems(result) {
 }
 
 function getListedItems(userId, result) {
-    const sql = 'SELECT * from data where seller_id=(?)';
+    const sql = 'SELECT * from data where seller_id=(?) and available=1';
     db.query(sql, [userId], (error, res) => {
+        if (error) {
+            result(error, null);
+        } else {
+            result(null, res);
+        }
+    });
+}
+
+function getPromotedItems(result) {
+    const sql = 'SELECT * from data where promoted=1 and available=1';
+    db.query(sql, (error, res) => {
         if (error) {
             result(error, null);
         } else {
@@ -35,7 +46,7 @@ function addItem(sellerId, name, price, description, expireDate, typeId, quentit
 }
 
 function deleteItem(itemId, result) {
-    const sql = 'DELETE from items where id=(?)';
+    const sql = 'UPDATE items SET available=0 where id=(?)';
     db.query(sql, [itemId], (error, res) => {
         if (error) {
             result(error, null);
@@ -57,4 +68,15 @@ function editItem(itemId, name, price, description, expireDate, typeId, quentity
     });
 }
 
-module.exports = { getAllItems, getListedItems, addItem, deleteItem, editItem };
+function promoteItem(itemId, result) {
+    const sql = 'Update items SET promoted=1 where id=(?)';
+    db.query(sql, [itemId], (error, res) => {
+        if (error) {
+            result(error, null);
+        } else {
+            result(null, true)
+        }
+    });
+}
+
+module.exports = { getAllItems, getListedItems, addItem, deleteItem, editItem, promoteItem, getPromotedItems };

@@ -4,28 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../../public/logo.png';
 import HomeIcon from '@mui/icons-material/Home';
 
-interface NavBarProps {
-    user: any;
-}
-
 const settings = ['Profile', 'Logout'];
 
-const NavBar: React.FC<NavBarProps> = ({ user }) => {
-    const navigate = useNavigate();
-    const [openMenu, setOpenMenu] = useState<null | HTMLElement>(null);
-    const [imageURL, setImageURL] = useState<string | undefined>();
-
-    useEffect(() => {
-        if (user?.picture && user?.picture.data) {
-            const blob = new Blob([new Uint8Array(user?.picture.data)], { type: user?.picture.type });
-            const url = URL.createObjectURL(blob);
-            setImageURL(url);
-            return () => URL.revokeObjectURL(url); // Cleanup
-        } else {
-            console.error('Invalid image prop. Expected an object with type and data properties.');
-        }
-    }, [user?.picture]);
-
+const NavBarBuyer = () => {
     const handleAddItem = () => {
         navigate('/add-edit-listings', { state: { initialData: { sellerId: user.id }, add: true, user: user } });
     };
@@ -98,4 +79,4 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
     );
 };
 
-export default NavBar;
+export default NavBarBuyer;

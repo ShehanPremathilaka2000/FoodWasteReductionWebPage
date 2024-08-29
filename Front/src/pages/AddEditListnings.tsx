@@ -1,12 +1,11 @@
 import { Box, Button, Grid, MenuItem, TextField, Tooltip, Typography, Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 
 const AddEditListings = () => {
     const location = useLocation();
     const { initialData, add, user } = location.state || {};
-    const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const [categories, setCategories] = useState<any[]>([]);
     const [quentityTypes, setQuentityTypes] = useState<any[]>([]);
@@ -127,7 +126,7 @@ const AddEditListings = () => {
                 body: formData,
             })
                 .then((response) => response.json())
-                .then((data) => {
+                .then(() => {
                     navigate('/seller', { state: { userId: itemData.sellerId } });
                 })
                 .catch((error) => console.error('Error updating item:', error));
@@ -141,6 +140,8 @@ const AddEditListings = () => {
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     };
+
+    console.log("Navigate", user)
 
     return (
         <Box sx={{ minHeight: '100vh', width: '100vw', backgroundColor: '#f5f5f5' }}>

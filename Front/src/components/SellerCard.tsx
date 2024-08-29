@@ -1,7 +1,8 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Box, CardActions, CardHeader, Collapse, Divider, Grid, IconButton, Tooltip } from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { Box, CardActions, CardHeader, Collapse, Divider, Grid, Icon, IconButton, Tooltip, Badge } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -11,6 +12,7 @@ import { styled } from '@mui/material/styles';
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DeleteConf from '../pages/DeleteConf';
+import promotedImg from '../../public/promoted.png';
 
 interface SellerCardProps {
     id: number;
@@ -27,6 +29,7 @@ interface SellerCardProps {
     onDelete?: any;
     quentityTypeId?: number;
     categoryId?: number;
+    promoted?: number;
     user: any;
 }
 
@@ -45,6 +48,31 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     }),
 }));
 
+const Ribbon = styled('div')({
+    width: 0,
+    height: 0,
+    borderLeft: '30px solid transparent',
+    borderRight: '30px solid transparent',
+    borderBottom: '30px solid gold',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    transform: 'rotate(45deg)',
+    zIndex: 1,
+    '&::before': {
+        content: '"Promoted"',
+        position: 'absolute',
+        top: -20,
+        left: -15,
+        width: 70,
+        textAlign: 'center',
+        fontSize: 10,
+        fontWeight: 'bold',
+        color: '#fff',
+        transform: 'rotate(-45deg)',
+    },
+});
+
 const SellerCard: React.FC<SellerCardProps> = (props) => {
     const {
         id,
@@ -61,6 +89,7 @@ const SellerCard: React.FC<SellerCardProps> = (props) => {
         onDelete,
         quentityTypeId,
         categoryId,
+        promoted,
         user,
     } = props;
     const [openDelete, setOpenDelete] = useState(false);
@@ -144,8 +173,21 @@ const SellerCard: React.FC<SellerCardProps> = (props) => {
         });
     };
 
+    const onClickPromote = () => {
+        navigate('/promote-item', {
+            state: {
+                itemId: id,
+                itemName: name,
+                user: user,
+                sellerId: sellerId,
+            },
+        });
+    };
+
     return (
-        <Card sx={{ width: '18vw', position: 'relative' }} ref={cardRef}>
+        <Card sx={{ width: '18vw', position: 'relative', border: promoted ? '2px solid gold' : 'none',
+                boxShadow: promoted ? '0 4px 8px rgba(0, 0, 0, 0.2)' : 'none' }} ref={cardRef}>
+                    {promoted ? <Ribbon /> : null}
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <CardHeader
                     sx={{ pb: 1, mb: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
@@ -215,6 +257,9 @@ const SellerCard: React.FC<SellerCardProps> = (props) => {
                 <IconButton onClick={onClickDelete}>
                     <DeleteIcon />
                 </IconButton>
+                {promoted === 0 ? <IconButton onClick={onClickPromote}>
+                    <ArrowUpwardIcon />
+                </IconButton> : null}
                 <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
                     <ExpandMoreIcon />
                 </ExpandMore>

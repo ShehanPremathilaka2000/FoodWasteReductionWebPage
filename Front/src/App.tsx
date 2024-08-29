@@ -6,6 +6,7 @@ import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Seller from './pages/Seller';
 import AddEditListings from './pages/AddEditListnings';
+import PromoteItem from './pages/PromoteItem';
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/seller" element={<Seller />} />
                 <Route path="/add-edit-listings" element={<AddEditListings />} />
+                <Route path="/promote-item" element={<PromoteItem />} />
             </Routes>
         </BrowserRouter>
     );

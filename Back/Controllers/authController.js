@@ -11,6 +11,7 @@ const checkUser = (req, res) => {
             res.status(200).send({
                 result: result[0].password === password,
                 userId: result[0].id,
+                admin: result[0].admin === 1,
             });
         }
     });

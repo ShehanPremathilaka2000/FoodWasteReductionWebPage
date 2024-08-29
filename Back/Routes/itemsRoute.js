@@ -10,7 +10,9 @@ module.exports = (app) => {
 
     router.post('/getAllItems', itemsController.getAllItems);
     router.post('/getListedItems', itemsController.getListedItems);
+    router.post('/getPromotedItems', itemsController.getPromotedItems);
     router.post('/addItem', upload.single('photo'), itemsController.addItem);
     router.post('/updateItem', upload.single('photo'), itemsController.editItem);
     router.put('/deleteItem', itemsController.deleteItem);
+    router.put('/promoteItem', itemsController.promoteItem);
 };

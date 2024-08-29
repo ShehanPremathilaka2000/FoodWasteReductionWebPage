@@ -1,7 +1,7 @@
 const db = require('./db.js');
 
 function checkUser(userName, result) {
-    const sql = 'SELECT id, password from seller where name=(?)';
+    const sql = 'SELECT id, password, admin from seller where name=(?)';
     db.query(sql, [userName], (error, res) => {
         if (error) {
             result(error, null);

@@ -1,3 +1,4 @@
+const { error } = require('console');
 const itemsModel = require('../Models/itemsModel');
 
 const getAllItems = (req, res) => {
@@ -20,6 +21,16 @@ const getListedItems = (req, res) => {
         }
     });
 };
+
+const getPromotedItems = (req, res) => {
+    itemsModel.getPromotedItems((error, result) => {
+        if (error) {
+            res.status(500).send({ error });
+        } else {
+            res.status(200).send({ result });
+        }
+    });
+}
 
 const addItem = (req, res) => {
     const { sellerId, name, price, description, expDate, category, quantity, quantityType } = req.body;
@@ -56,4 +67,18 @@ const editItem = (req, res) => {
     });
 };
 
-module.exports = { getAllItems, getListedItems, addItem, deleteItem, editItem };
+const promoteItem = (req, res) => {
+    const { itemId } = req.body;
+    console.log("itemId", itemId);
+    itemsModel.promoteItem(itemId, (error, result) => {
+        if (error) {
+            console.log("Error", error)
+            res.status(500).send({ error });
+        } else {
+            console.log("Done")
+            res.status(200).send({ message: result });
+        }
+    });
+};
+
+module.exports = { getAllItems, getListedItems, addItem, deleteItem, editItem, promoteItem, getPromotedItems };
